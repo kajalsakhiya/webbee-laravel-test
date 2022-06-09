@@ -102,7 +102,7 @@ class EventsController extends BaseController
      */
 
     public function getEventsWithWorkshops() {
-        $workshop = Event::with('workshops')->get()->toArray();
+        $workshop = Event::with('workshops')->get();//->toArray();
 
         // $workshop = json_encode($workshop);
         // dd($workshop);
@@ -187,6 +187,14 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
+        $workshop = Event::with('workshops')->whereHas('workshops', function($query) {
+           $query->where('start', '>', date('Y-m-d H:i:s'));
+        })->get();
+
+        return response()->json($workshop);
+        // echo "<pre>";
+        // print_r($workshop);
+        // exit;
         throw new \Exception('implement in coding task 2');
     }
 }
